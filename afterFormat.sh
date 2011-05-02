@@ -61,6 +61,7 @@ opcoes=$( dialog --stdout --separate-output                                     
     --title "afterFormat - Pós Formatação para as versão 11.04 do Ubuntu"                                   \
     --checklist 'Selecione os softwares que deseja instalar:' 0 0 0                                         \
     Desktop         "Muda \"Área de Trabalho\" para \"Desktop\" *(Apenas ptBR)"                         ON  \
+    UnityTray       "Habilita ícones de aplicações no tray (como nas versões anteriores) "              ON  \
     PS1             "\$PS1 no formato: usuário ~/diretório/atual (BranchGit)"                           ON  \
     Monaco          "Adiciona fonte Monaco (padrão do TextMate) e seleciona para o Gedit e o Terminal"  ON  \
     SSH             "SSH server e client"                                                               ON  \
@@ -98,7 +99,11 @@ do
         xdg-user-dirs-gtk-update
         xdg-user-dirs-update
     fi
-
+    if [ "$opcao" = 'UnityTray' ]
+    then
+        gsettings set com.canonical.Unity.Panel systray-whitelist "['all']"
+        echo "Please logout and login again"
+    fi
     if [ "$opcao" = 'PS1' ]
     then
         # Instala o git, que é dependência para a personalização
